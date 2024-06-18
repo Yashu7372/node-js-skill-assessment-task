@@ -1,53 +1,165 @@
-<main id="site-main">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Book</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+
+        .form-title {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .text-light {
+            color: #6c757d;
+        }
+
+        .text-dark {
+            color: #343a40;
+        }
+
+        .filter {
+            margin-bottom: 20px;
+        }
+
+        .filter a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .filter a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
     <div class="container">
-        <div class="box-nav d-flex justify-between">
-           <div class="filter">
-               <a href="/"><i class="fas fa-angle-double-left"></i> All Books</a>
-           </div>
+        <div class="filter">
+            <a href="/"><i class="fas fa-angle-double-left"></i> All Books</a>
         </div>
         <div class="form-title text-center">
             <h2 class="text-dark">New Book</h2>
             <span class="text-light">Use the below form to add a new book</span>
         </div>
 
-        <form action="/api/books" method="POST" id="add_book">
+        <form id="add_book">
             <div class="new_book">
                 <div class="form-group">
                     <label for="name" class="text-light">Name</label>
                     <input type="hidden" name="id" value="">
-                    <input type="text" name="name" value="" >
+                    <input type="text" name="name" id="name" value="">
                 </div>
                 <div class="form-group">
-                    <label for="Author" class="text-light">Author</label>
-                    <input type="text" name="author" value="">
+                    <label for="author" class="text-light">Author</label>
+                    <input type="text" name="author" id="author" value="">
                 </div>
                 <div class="form-group">
                     <label for="price" class="text-light">Price</label><br>
-                    <input type="number" name="price" value="">
+                    <input type="number" name="price" id="price" value="">
                 </div>
                 <div class="form-group">
-                    <label for="price" class="text-light">Page</label><br>
-                    <input type="number" name="page" value="">
+                    <label for="page" class="text-light">Page</label><br>
+                    <input type="number" name="page" id="page" value="">
                 </div>
         
                 <div class="form-group">
-                    <label for="gender" class="text-light">Status</label>
+                    <label for="status" class="text-light">Status</label>
                     <div class="radio inline">
-                        <input type="radio" id="radio-4" name="status" value="Available" >
-                        <label for="radio-4" class="radio-label">Available</label>
+                        <input type="radio" id="radio-available" name="status" value="Available">
+                        <label for="radio-available" class="radio-label">Available</label>
                     </div>
                     <div class="radio inline">
-                        <input type="radio" id="radio-5" name="status" value="Not Available" >
-                        <label for="radio-5" class="radio-label">Not Available</label>
+                        <input type="radio" id="radio-not-available" name="status" value="Not Available">
+                        <label for="radio-not-available" class="radio-label">Not Available</label>
                     </div>
                 </div>
         
                 <div class="form-group">
                     <button type="submit" class="btn text-dark update">Save</button>
                 </div>
-        
             </div>
         </form>
-       
     </div>
-</main>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $("#add_book").submit(function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get form values
+            const name = $("#name").val().trim();
+            const author = $("#author").val().trim();
+            const price = parseFloat($("#price").val());
+            const page = parseFloat($("#page").val());
+
+            // Validate form fields
+            if (!name || name.length === 0) {
+                alert("Book name is required and cannot be empty or whitespace.");
+                return;
+            }
+            if (!author || author.length === 0) {
+                alert("Author name is required and cannot be empty or whitespace.");
+                return;
+            }
+            if (isNaN(price) || price <= 0) {
+                alert("Price must be a positive number greater than zero.");
+                return;
+            }
+            if (isNaN(page) || page <= 0) {
+                alert("Page count must be a positive number greater than zero.");
+                return;
+            }
+
+            // If validation passes, submit the form via AJAX
+            $.ajax({
+                url: "/api/books",
+                method: "POST",
+                data: $(this).serialize(),
+                success: function() {
+                    alert("Book saved Successfully!");
+                    window.location.href = "/";
+                },
+                error: function(error) {
+                    console.error("Error adding book:", error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

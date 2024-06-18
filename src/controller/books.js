@@ -14,7 +14,7 @@ class Controller {
 
   async getBooks(req, res) {
     try {
-      const results = await Books.find();
+      const results = await Books.find().sort({ isIssued: 1 });
       res.send(results);
     } catch (error) {
       console.log(error.message);
