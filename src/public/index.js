@@ -1,5 +1,5 @@
 
-const baseUrl = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+const baseUrl = `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}`;
 
 $("#add_book").submit(function (event) {
     alert("Data Inserted Successfully!");
