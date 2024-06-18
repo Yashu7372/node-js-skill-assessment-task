@@ -18,11 +18,9 @@ require("app-module-path").addPath(dirname);
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+app.use('/js', express.static(path.resolve(__dirname, "public/index.js"))) //to load js
 
 const bookRoutes = require("./routes/book");
-app.get('/', (req, res) => {
-    res.render('index'); // Renders views/index.ejs
-  });
 
 app.use("/", bookRoutes);
 

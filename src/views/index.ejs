@@ -6,18 +6,56 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Skill Assesment Task</title>
 </head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"  crossorigin="anonymous"></script>
+<script src="/js"></script>
 <body>
 	<h1>Books Management<h1>
+	<!-- make a table of all the available books -->
+	
 		<!-- make a table of all the available books -->
+
 		<h2> Books </h2>
-		<!-- table  will contain 5 columns
-			book title (book name), 
-			pages (no. of pages in the book), 
-			price (price of the book), 
-			status (availablity of the book), 
-			action (Issue/Return on basis of the availablity)
-			delete (A button to delete the book from the database 
-							(Hint: Set 'isDeleted' field to true in the book schema)) -->
+		<div class="box-nav d-flex justify-between">
+			<a href="/add-book" class="border-shadow">
+				<span class="text-gradient">New Book <i class="fas fa-book"></i></i></span>
+			</a>
+		</div>
+		<table>
+			<thead>
+				<tr>
+					<th>Book Title</th>
+					<th>Pages</th>
+					<th>Price</th>
+					<th>Status</th>
+					<th>Action</th>
+					<th>Delete</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- Add rows for each book -->
+				<% if (books && books.length) { %>
+					<% books.forEach(function(book) { %>
+						<% if (!book.isDeleted) { %>
+							<tr>
+								<td><%= book.title %></td>
+								<td><%= book.page %></td>
+								<td><%= book.price %></td>
+								<td><%= book.isIssued ? "Not Available" : "Available" %></td>
+								<td><button class="update" data-id="<%= book._id%>" onclick="handleUpdate('<%= book._id %>')"><%= book.isIssued ? "Return" : "Issue" %></button></td>
+								<td><button class="delete" data-id="<%= book._id%>" onclick="handleDelete('<%= book._id %>')">Delete</button></td>
+							</tr>
+						<% } %>
+					<% }) %>
+				<% } else { %>
+					<tr>
+						<td colspan="6">No books available</td>
+					</tr>
+				<% } %>
+			</tbody>
+		</table>
+
+		<!-- table will contain 5 columns -->
+		
 
 	<!-- Create Add More (Books) button -->
 	<!-- Button Action: -->
@@ -25,6 +63,37 @@
 	<!-- -- On submit, book will be added to the database via server api -->
 
 	<h2> Deleted Books </h2>
+	<table>
+		<thead>
+			<tr>
+				<th>Book Title</th>
+				<th>Pages</th>
+				<th>Price</th>
+				<th>Status</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- Add rows for each deleted book -->
+			<% if (books && books.length) { %>
+				<% books.forEach(function(book) { %>
+					<% if (book.isDeleted) { %>
+						<tr>
+							<td><%= book.title %></td>
+							<td><%= book.page %></td>
+							<td><%= book.price %></td>
+							<td><%= book.isIssued ? "Available" : "Not Available" %></td>
+							<td><button class="delete" data-id="<%= book._id%>" onclick="handleDelete('<%= book._id %>')">Restore</button></td>
+						</tr>
+					<% } %>
+				<% }) %>
+			<% } else { %>
+				<tr>
+					<td colspan="5">No deleted books available</td>
+				</tr>
+			<% } %>
+		</tbody>
+	</table>
 	<!-- table  will contain 4 columns
 		book title (book name), 
 		pages (no. of pages in the book), 
