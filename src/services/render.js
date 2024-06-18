@@ -6,7 +6,7 @@ const port = process.env.PORT || 5000;
 
 exports.homeRoutes = (req, res) => {
     // Make a get request to /api/books using axios
-    const baseUrl = `${req.protocol}://${req.hostname}`;
+    const baseUrl = "http://localhost:5000";
     axios.get(`${baseUrl}/api/books`)
         .then(function(response){
             res.render('index', { books : response.data });
