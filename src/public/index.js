@@ -1,11 +1,6 @@
 
 const baseUrl = `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}`;
 
-$("#add_book").submit(function (event) {
-    alert("Data Inserted Successfully!");
-    window.location.href = "/";
-});
-
 function handleUpdate(bookId) {
     // Make a GET request to fetch the book details
     $.ajax({
